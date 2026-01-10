@@ -39,6 +39,15 @@ async function callAIAPI(inputText) {
   return data.choices?.[0]?.message?.content || '未收到有效回复'
 }
 
+export async function GET() {
+  return Response.json({ 
+    message: 'Hello from API Test 2!',
+    endpoint: '/api/another-test',
+    method: 'GET',
+    usage: 'Send POST request with { "input": "your text" } to call AI API with processing'
+  })
+}
+
 export async function POST(request) {
   try {
     const { input } = await request.json()
