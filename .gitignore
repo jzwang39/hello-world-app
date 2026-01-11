@@ -1,0 +1,44 @@
+# Next.js
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Production
+build/
+dist/
+
+# Environment variables
+.env*.local
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Deployment files
+deploy-package/
+deploy-package-ftp/
+deploy-package.tar.gz
+deploy.sh
+deploy_ftp.sh
+deploy_with_config.sh
+ftp_upload.lftp
+ssh_diagnose.sh
+ssh_troubleshoot.sh
+node-installer.pkg
+
+# Deployment documentation (optional - you may want to keep these)
+# DEPLOYMENT_GUIDE.md
+# DEPLOYMENT_SOLUTIONS.md
+# MANUAL_DEPLOYMENT.md
+# SERVER_DEPLOYMENT_STEPS.md
+# VERCEL_DEPLOYMENT_GUIDE.md
+# VIRTUAL_HOST_DEPLOYMENT.md
