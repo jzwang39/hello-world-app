@@ -1,54 +1,80 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
 
 export default function Home() {
+  const [inputText, setInputText] = useState('')
+  const [result, setResult] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  // 处理逻辑：调用第三方AI API
+  const handleProcess = async () => {
+    if (!inputText.trim()) {
+      setResult('请输入文本内容')
+      return
+    }
+    
+    setLoading(true)
+    setResult('')
+    
+    try {
+      const response = await fetch('/api/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: inputText }),
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setResult(`AI回复：${data.output}`)
+      } else {
+        setResult(`错误：${data.error}`)
+      }
+    } catch (error) {
+      setResult(`请求失败：${error.message}`)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Hello World App - Next.js 14.0.0
-        </p>
-      </div>
-
-      <div className="relative flex place-items-center">
-        <h1 className="text-4xl font-bold mb-8">
-          Welcome to Hello World App!
-        </h1>
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <Link
-          href="/api/test"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            API Test 1{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Test the first API endpoint
-          </p>
-        </Link>
-
-        <Link
-          href="/api/another-test"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            API Test 2{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Test the second API endpoint
-          </p>
-        </Link>
+    <main className="flex min-h-screen flex-col items-center justify-between p-8 md:p-24">
+      <div className="z-10 max-w-4xl w-full">
+        {/* 文本框 */}
+        <div className="mb-6">
+          <label htmlFor="textInput" className="block text-lg font-medium mb-2">
+            请输入文本：
+          </label>
+          <textarea
+            id="textInput"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            placeholder="在这里输入您要处理的文本..."
+            className="w-full h-32 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          />
+        </div>
+        
+        {/* 按钮区域 */}
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={handleProcess}
+            disabled={loading}
+            className="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-semibold py-3 px-8 rounded-lg transition-colors text-lg"
+          >
+            {loading ? 'AI处理中...' : 'AI处理文本'}
+          </button>
+        </div>
+        
+        {/* 结果显示区域 */}
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <h3 className="font-semibold text-lg mb-4">处理结果</h3>
+          <div className="min-h-40 p-4 bg-white border rounded">
+            {result || '等待处理...'}
+          </div>
+        </div>
       </div>
     </main>
   )
