@@ -43,29 +43,30 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-8 md:p-24">
       <div className="z-10 max-w-4xl w-full">
-        {/* 文本框 */}
+        {/* 文本框和按钮组合 */}
         <div className="mb-6">
           <label htmlFor="textInput" className="block text-lg font-medium mb-2">
             请输入文本：
           </label>
-          <textarea
-            id="textInput"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="在这里输入您要处理的文本..."
-            className="w-full h-32 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-          />
-        </div>
-        
-        {/* 按钮区域 */}
-        <div className="flex justify-center mb-6">
-          <button
-            onClick={handleProcess}
-            disabled={loading}
-            className="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-semibold py-3 px-8 rounded-lg transition-colors text-lg"
-          >
-            {loading ? 'AI处理中...' : 'AI处理文本'}
-          </button>
+          <div className="relative">
+            <textarea
+              id="textInput"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="在这里输入您要处理的文本..."
+              className="w-full h-32 p-4 pr-32 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            />
+            {/* 按钮放在右下角 */}
+            <div className="absolute bottom-3 right-3">
+              <button
+                onClick={handleProcess}
+                disabled={loading}
+                className="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white font-semibold py-2 px-6 rounded-lg transition-colors text-base"
+              >
+                {loading ? '处理中...' : '处理'}
+              </button>
+            </div>
+          </div>
         </div>
         
         {/* 结果显示区域 */}
